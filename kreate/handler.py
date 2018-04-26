@@ -2,7 +2,10 @@ from kreate import helm
 from kreate import codefinder
 from kreate import dependencies
 from knack.log import get_logger
+import os
+import tempfile
 import re
+import urllib.request
 logger = get_logger(__name__)
 
 
@@ -11,6 +14,10 @@ class Handler(object):
     def __init__(self):
         self.extensions = [".py", ".js", ".ts", ".go", ".cs", ".java", ".rb"]
         self.ignore_folders = ["node_modules", "vendor", "bin", "lib", "obj"]
+
+    def download_models(self):
+        urllib.request.urlretrieve('https://github.com/kreate-io/kreate/raw/master/models/dependency_model.pkl',
+            os.path.join(tempfile.gettempdir(), 'dependency_model.pkl'))
 
     def get_helm_charts_details(self, repo_name, repo_url, folders):
         self.helm_charts = helm.Helm(repo_name, repo_url, folders, logger)

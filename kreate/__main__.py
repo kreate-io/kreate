@@ -35,6 +35,7 @@ helps['deploy'] = """
 def create_command_handler(path, namespace, repo_url, folders, repo_name, with_draft):
 
     commands_handler = handler.Handler()
+    commands_handler.download_models()
     charts = commands_handler.get_helm_charts_details(repo_name, repo_url, folders)
     files = commands_handler.get_source_files(path)
     matched_charts = commands_handler.match_source_to_charts(files, charts)

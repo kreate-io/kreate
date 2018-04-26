@@ -1,8 +1,10 @@
 from sklearn.externals import joblib
+import os
+import tempfile
 import numpy as np
 
 class Scorer():
-    DEPENDENCY_MODEL_PATH = './models/dependency_model.pkl'
+    DEPENDENCY_MODEL_PATH = os.path.join(tempfile.gettempdir(), 'dependency_model.pkl')
 
     def __init__(self):
         self.__load_dependency_model()
