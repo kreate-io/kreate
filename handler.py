@@ -20,5 +20,5 @@ class Handler(object):
 
     def get_source_files(self, path):
         fileGetter = codefinder.CodeFinder(path, self.extensions)
-        files = fileGetter.getCodeFiles()
+        files = fileGetter.get_code_files()
         return files
