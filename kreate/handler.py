@@ -1,5 +1,5 @@
-import helm
-import codefinder
+from kreate import helm
+from kreate import codefinder
 
 from knack.log import get_logger
 logger = get_logger(__name__)

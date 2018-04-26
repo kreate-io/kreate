@@ -14,21 +14,21 @@ from knack.help import CLIHelp
 
 from knack.help_files import helps
 
-import handler
+from kreate import handler
 
 cli_name = os.path.basename(__file__)
 
-helps['create'] = """
+helps['deploy'] = """
     type: group
-    short-summary: create deployment.
+    short-summary: kreate deploy.
 """
 
-helps['create deployment'] = """
+helps['deploy'] = """
     type: command
-    short-summary: create deployment.
+    short-summary: deploy.
     examples:
         - name: It's pretty straightforward.
-          text: {cli_name} create deployment --path "source_files_path"
+          text: {cli_name} deploy --path "source_files_path"
 """.format(cli_name=cli_name)
 
 
@@ -38,7 +38,7 @@ def create_command_handler(path, namespace, repo_url, folders, repo_name, with_d
     charts_details = commands_handler.get_helm_charts_details(repo_name, repo_url, folders)
     files = commands_handler.get_source_files(path)
     
-    commands_handler.install_helm_chart("mysql", "stable/mysql", namespace)
+    #commands_handler.install_helm_chart("mysql", "stable/mysql", namespace)
     
 WELCOME_MESSAGE = r"""
  _        _______  _______  _______ _________ _______ 
@@ -66,13 +66,13 @@ class KreateCLIHelp(CLIHelp):
 class CommandsLoader(CLICommandsLoader):
 
     def load_command_table(self, args):
-        with CommandGroup(self, 'create', '__main__#{}') as g:
-            g.command('deployment', 'create_command_handler',
+        with CommandGroup(self, '', '__main__#{}') as g:
+            g.command('deploy', 'create_command_handler',
                       confirmation=False)
         return super(CommandsLoader, self).load_command_table(args)
 
     def load_arguments(self, command):
-        with ArgumentsContext(self, 'create deployment') as ac:
+        with ArgumentsContext(self, 'deploy') as ac:
             ac.argument('path', required=True)
             ac.argument('namespace', default="default",
                         const="default", nargs='?', required=False)

@@ -2,9 +2,9 @@ import nltk
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 import re
-import chart_model
+from kreate import chart_model
 import os
-import model_scorer
+from kreate import model_scorer
 
 class Dependencies:
     __chart_model__ = chart_model.ChartModel()

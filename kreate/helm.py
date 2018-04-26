@@ -52,4 +52,4 @@ class Helm(object):
     def install_helm_chart(self, name, chart_name, namespace="default"):
         command = "helm upgrade " + name + \
             " --install --namespace " + namespace + " " + chart_name
-        subprocess.run(command, shell=True, check=True)
+        subprocess.run(command, shell=False, check=True)
