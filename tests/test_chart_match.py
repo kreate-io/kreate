@@ -14,4 +14,4 @@ def test_flow():
     charts = helm_charts.get_helm_charts_details()
     deps = dependencies.Dependencies()
     results = deps.__match_charts__(1, charts, ['pg'])
-    assert 'postgresql' in results
+    assert 'postgres' in results[0]['name']
