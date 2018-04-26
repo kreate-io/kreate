@@ -88,4 +88,7 @@ class Dependencies:
             if closest_distance >= self.__STOP_THRESHOLD:
                 break 
 
+        if matches:
+            matches.sort(key=lambda x: x['score'], reverse=True)
+
         return matches
