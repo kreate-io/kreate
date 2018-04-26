@@ -16,7 +16,7 @@ class Scorer():
     def predict_charts(self, charts, features):
         chart_scores = dict()
 
-        for chart in enumerate(charts):
+        for chart in charts:
             closest_distance = 0
 
             keywords = []
