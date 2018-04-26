@@ -1,5 +1,4 @@
 import nltk
-#nltk.download()
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 import re
