@@ -12,6 +12,9 @@ class Scorer():
         self.dependency_model= joblib.load(self.DEPENDENCY_MODEL_PATH)
 
 
+    def remove_high_frequency_terms(self, line):
+        pass
+
     def predict_dependencies(self, code_lines):
         preds = self.dependency_model.predict(code_lines)
 
