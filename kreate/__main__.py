@@ -35,10 +35,13 @@ helps['deploy'] = """
 def create_command_handler(path, namespace, repo_url, folders, repo_name, with_draft):
 
     commands_handler = handler.Handler()
-    charts_details = commands_handler.get_helm_charts_details(repo_name, repo_url, folders)
+    charts = commands_handler.get_helm_charts_details(repo_name, repo_url, folders)
     files = commands_handler.get_source_files(path)
-    
-    #commands_handler.install_helm_chart("mysql", "stable/mysql", namespace)
+    matched_charts = commands_handler.match_source_to_charts(files, charts)
+
+    for chart_group in matched_charts:
+        commands_handler.install_helm_chart(chart_group['name'], chart_group['name'], namespace)
+            
     
 WELCOME_MESSAGE = r"""
  _        _______  _______  _______ _________ _______ 
@@ -50,7 +53,7 @@ WELCOME_MESSAGE = r"""
 |  /  \ \| ) \ \__| (____/\| )   ( |   | |   | (____/\
 |_/    \/|/   \__/(_______/|/     \|   )_(   (_______/
 
-Welcome to the cool Kreate CLI!
+Welcome to the Kreate CLI!
 
 Here are the base commands:
 """
@@ -59,7 +62,7 @@ class KreateCLIHelp(CLIHelp):
 
     def __init__(self, cli_ctx=None):
         super(KreateCLIHelp, self).__init__(cli_ctx=cli_ctx,
-                                        privacy_statement='Kreate privacy statement.',
+                                        privacy_statement='',
                                         welcome_message=WELCOME_MESSAGE)
 
 
