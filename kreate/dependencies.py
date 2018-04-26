@@ -1,6 +1,7 @@
 import nltk
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
+import jellyfish
 import re
 from kreate import chart_model
 import os
@@ -8,32 +9,29 @@ from kreate import model_scorer
 
 class Dependencies:
     __chart_model__ = chart_model.ChartModel()
-    __SCORE_THRESHOLD__ = 0.6
+    __SCORE_THRESHOLD = 0.6
+    __JARO_WINKLER_THRESHOLD = 0.7
+    __STOP_THRESHOLD = 0.9
+    __TOP_CHART_MATCHES = 3
 
-    def match_charts(self, src_paths):
+    def match_charts(self, charts, src_paths):
         dep_lines = self.__extract_dependency_lines__(src_paths)
 
         dependencies = []
         for dep_line in dep_lines:
             dep_keywords = self.__dependency_to_keywords__(dep_line)
-            dep_keyword_scores = self.__chart_model__.score_keywords(dep_keywords)
-
+            
             dependencies.append({
                 'line': dep_line,
-                'keyword_scores': dep_keyword_scores
+                'keywords': dep_keywords
             })
-                
-        charts = []
+        
+        matched_charts = []
         for dep in dependencies:
-            top_keywords = self.__filter_keywords__(dep)
-            chart = self.__get_chart__(top_keywords)
+            matches = self.__match_charts__(self.__TOP_CHART_MATCHES, charts, dep['keywords'])
+            matched_charts.append(matches)
 
-            charts.append({
-                'dependency_line': dep['line'],
-                'chart': chart
-            })
-
-        return charts
+        return matched_charts
 
     def __extract_dependency_lines__(self, src_paths):
         scorer = model_scorer.Scorer()
@@ -62,26 +60,32 @@ class Dependencies:
     
         return keywords
 
-    def __filter_keywords__(self, dependency):
-        filtered_keywords = []
+    def __match_charts__(self, top_count, charts, features):
+        matches = []
 
-        for kw in dependency['keyword_scores']:
-            if(kw['score'] >= self.__SCORE_THRESHOLD__):
-                filtered_keywords.append(kw)
-        
-        #sort by score decending (in place)
-        filtered_keywords.sort(key=lambda kw: kw['score'], reverse=True)
-        return filtered_keywords
+        for chart in charts:
+            closest_distance = 0
 
-    
-    def __get_chart__(self, keywords):
-        #todo: replace with a call to Tomer's code
-        for kw in keywords:
-            if 'pg' == kw['keyword']:
-                return 'https://github.com/kubernetes/charts/blob/master/stable/postgresql/Chart.yaml'
-            if 'mongodb' == kw['keyword']:
-                return 'https://github.com/kubernetes/charts/blob/master/stable/mongodb/Chart.yaml'
-            if 'mysql' == kw['keyword']:
-                return 'https://github.com/kubernetes/charts/tree/master/stable/mysql/Chart.yaml'
+            keywords = []
+            keywords.append(chart['name'])
 
+            if 'keywords' in chart:
+                keywords = keywords + chart['keywords']
 
+            for feature in features:
+                for keyword in keywords:
+                    distance = jellyfish.jaro_winkler(feature, keyword)
+
+                    if distance > self.__JARO_WINKLER_THRESHOLD and distance > closest_distance:
+                        closest_distance = distance
+
+            if closest_distance > 0:
+                matches.append({
+                    'name': chart['name'],
+                    'score': closest_distance
+                })
+
+            if closest_distance >= self.__STOP_THRESHOLD:
+                break 
+
+        return matches
