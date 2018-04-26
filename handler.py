@@ -8,8 +8,9 @@ logger = get_logger(__name__)
 class Handler(object):
 
     def __init__(self):
-        self.extensions = [".py", ".js", ".ts", ".go", ".cs", ".java"]
-        
+        self.extensions = [".py", ".js", ".ts", ".go", ".cs", ".java", ".rb"]
+        self.ignore_folders = ["node_modules", "vendor", "bin", "lib", "obj"]
+
     def get_helm_charts_details(self, repo_name, repo_url, folders):
         self.helm_charts = helm.Helm(repo_name, repo_url, folders, logger)
         charts_details = self.helm_charts.get_helm_charts_details()
@@ -19,6 +20,6 @@ class Handler(object):
         self.helm_charts.install_helm_chart(name, chart_name, namespace)
 
     def get_source_files(self, path):
-        fileGetter = codefinder.CodeFinder(path, self.extensions)
+        fileGetter = codefinder.CodeFinder(path, self.extensions, self.ignore_folders)
         files = fileGetter.get_code_files()
         return files
