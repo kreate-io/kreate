@@ -20,5 +20,3 @@ def test_match_charts():
         assert charts
         assert len(charts) == 3
         #assert 'postgres' in charts[0][0]['name']
-        
-test_match_charts()
