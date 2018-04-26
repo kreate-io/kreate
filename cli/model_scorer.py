@@ -15,6 +15,7 @@ class Scorer():
     def remove_high_frequency_terms(self, line):
         pass
 
+
     def predict_dependencies(self, code_lines):
         preds = self.dependency_model.predict(code_lines)
 
