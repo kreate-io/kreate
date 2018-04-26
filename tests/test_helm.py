@@ -1,4 +1,4 @@
-import helm
+from kreate import helm
 import logging
 
 repo_name = "charts"

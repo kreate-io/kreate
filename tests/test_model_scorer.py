@@ -1,5 +1,5 @@
-import helm
-import model_scorer
+from kreate import helm
+from kreate import model_scorer
 import logging
 
 repo_name = "charts"

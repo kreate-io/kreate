@@ -1,6 +1,6 @@
 import os
 import pytest
-import codefinder
+from kreate import codefinder
 
 def test_codefinder():
     current = os.getcwd() + "/tests/data"
