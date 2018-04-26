@@ -24,6 +24,6 @@ setup(
      scripts=[
         'kreate/kreate',
         'kreate/kreate.bat',
-    ]
-    #data_files=[('my_data', ['data/data_file'])]
+    ],
+    data_files=[('dependency_model', ['models/dependency_model.pkl'])]
 )
