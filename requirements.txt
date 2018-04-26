@@ -1,0 +1,7 @@
+gitpython
+knack
+pytest
+nltk
+sklearn
+scipy
+jellyfish
