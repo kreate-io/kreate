@@ -17,7 +17,7 @@ setup(
     url='http://pypi.python.org/pypi/Kreate/',
     description='Fast deployment of dependencies to Kubernetes',
     long_description=open('README.md').read(),
-    install_requires=["gitpython", "knack", "numpy",
+    install_requires=["gitpython", "knack", "numpy", "scipy",
                       "nltk", "sklearn", "jellyfish", "pyyaml"],
     extras_require={  # Optional
         'test': ['pytest'],
