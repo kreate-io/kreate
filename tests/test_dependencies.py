@@ -69,5 +69,3 @@ def test_match_charts_per_keywords():
                 # yaron to fix: assert len(matched_charts) <= chart_count
                 assert matched_charts[0]['name'] == expected_charts[i]
                  
-
-test_match_charts_per_keywords()
