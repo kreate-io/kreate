@@ -12,6 +12,11 @@ Kreate allows developers to focus on code and not ops by identifying and deployi
 * Kubernetes Cluster.
 * Install and setup [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * Install and setup [helm](https://docs.helm.sh/using_helm/)
+* Add helm's stable and incubator repos
+```
+$ helm repo add stable https://kubernetes-charts.storage.googleapis.com
+$ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+```
 
 ### Docker
 ```
