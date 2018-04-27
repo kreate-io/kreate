@@ -47,7 +47,7 @@ class Helm(object):
                 for folder in self.folders:
                     prefix = folder + "/" 
                     if prefix in chart: # TODO: Change Can break
-                        data["fullname"] = prefix + chart
+                        data["fullname"] = prefix + data["name"]
                     self.logger.debug("Added " + data["name"])
                 chartfile.close()
         shutil.rmtree(self.charts_path)
@@ -56,4 +56,4 @@ class Helm(object):
     def install_helm_chart(self, name, chart_name, namespace="default"):
         command = "helm upgrade " + name + \
             " --install --namespace " + namespace + " " + chart_name
-        subprocess.run(command, shell=False, check=True)
+        subprocess.run(command, shell=True, check=True)
