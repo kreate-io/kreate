@@ -104,4 +104,4 @@ class Dependencies:
         if matches:
             matches.sort(key=lambda x: x['score'], reverse=True)
 
-        return matches
+        return matches[0:top_count]

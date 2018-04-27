@@ -66,6 +66,6 @@ def test_match_charts_per_keywords():
                 chart_count = 3
                 matched_charts = dependencies.Dependencies().__match_charts__(chart_count, charts, keywords[i])
                 
-                # yaron to fix: assert len(matched_charts) <= chart_count
+                assert len(matched_charts) <= chart_count
                 assert matched_charts[0]['name'] == expected_charts[i]
                  
