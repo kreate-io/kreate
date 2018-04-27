@@ -84,8 +84,8 @@ class Dependencies:
 
                     if distance > self.__JARO_WINKLER_THRESHOLD:
                         # reward for name. hello renforcement learning and neural nets we like u
-                        if idx == 0:
-                            distance = distance + 0.5
+                        if idx == 0 and distance == 1.0:
+                            distance = distance + 1.0
                         
                         total_score = total_score + distance
                         jaro_count = jaro_count + 1
