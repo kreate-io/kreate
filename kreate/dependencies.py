@@ -11,8 +11,7 @@ from kreate import dependency_stopwords
 
 class Dependencies:
     __chart_model__ = chart_model.ChartModel()
-    __SCORE_THRESHOLD = 0.6
-    __JARO_WINKLER_THRESHOLD = 0.75
+    __JARO_WINKLER_THRESHOLD = 0.8
     __TOP_CHART_MATCHES = 3
 
     def match_charts(self, charts, src_paths):
@@ -67,6 +66,7 @@ class Dependencies:
     def __match_charts__(self, top_count, charts, features):
         # TODO: implement top_count
         matches = []
+        known_terms = self.__get_known_terms()
 
         for chart in charts:
             keywords = []
@@ -75,15 +75,19 @@ class Dependencies:
             if 'keywords' in chart:
                 keywords = keywords + chart['keywords']
 
+            keywords = self.__f7(keywords)
             total_score = 0
             jaro_count = 0
 
             for feature in features:
+                if feature in known_terms.keys():
+                    feature = known_terms[feature]
+
                 for idx, keyword in enumerate(keywords):
                     distance = jellyfish.jaro_winkler(feature, keyword)
 
                     if distance > self.__JARO_WINKLER_THRESHOLD:
-                        if idx == 0 and distance > 0.8:
+                        if idx == 0:
                             distance = distance * 2
                         
                         total_score = total_score + distance
@@ -99,8 +103,27 @@ class Dependencies:
                 'fullname': chart['fullname'],
                 'score': score
             })
+        
+        filtered = [x for x in matches if x['score'] >= self.__calculate_final_threshold(x['score'])]
 
-        if matches:
-            matches.sort(key=lambda x: x['score'], reverse=True)
+        if filtered:
+            filtered.sort(key=lambda x: x['score'], reverse=True)
 
-        return matches[0:top_count]
+        return filtered[0:top_count]
+
+    def __calculate_final_threshold(self,score):
+        if score <= 1.0:
+            return self.__JARO_WINKLER_THRESHOLD
+        else:
+            return 1
+
+
+    
+    def __f7(self, seq):
+        seen = set()
+        seen_add = seen.add
+        return [x for x in seq if not (x in seen or seen_add(x))]
+
+    def __get_known_terms(self):
+        # TODO: externalize
+        return {'pg': 'postgres'}
