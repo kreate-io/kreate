@@ -8,6 +8,11 @@ Kreate allows developers to focus on code and not ops by identifying and deployi
 
 ## Installation
 
+#### Prerequisites 
+* Kubernetes Cluster.
+* Install and setup [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* Install and setup [helm](https://docs.helm.sh/using_helm/)
+
 ### Docker
 ```
 docker run -it -v ${HOME}:/root kreateio/kreate
