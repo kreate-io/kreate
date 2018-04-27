@@ -59,7 +59,7 @@ class Dependencies:
             extended_stopwords = stopwords.words('english')
             extended_stopwords = extended_stopwords + dependency_stopwords.get()
 
-            if(not token in extended_stopwords and not token in keywords):
+            if(not token in extended_stopwords): #and not token in keywords):
                 keywords.append(token)
 
         return keywords
