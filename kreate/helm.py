@@ -44,7 +44,11 @@ class Helm(object):
             with open(chart) as chartfile:
                 data = yaml.safe_load(chartfile)
                 yaml_objects.append(data)
-                self.logger.debug("Added " + data["name"])
+                for folder in self.folders:
+                    prefix = folder + "/" 
+                    if prefix in chart: # TODO: Change Can break
+                        data["fullname"] = prefix + chart
+                    self.logger.debug("Added " + data["name"])
                 chartfile.close()
         shutil.rmtree(self.charts_path)
         return yaml_objects
