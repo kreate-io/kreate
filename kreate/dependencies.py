@@ -12,7 +12,7 @@ from kreate import dependency_stopwords
 class Dependencies:
     __chart_model__ = chart_model.ChartModel()
     __SCORE_THRESHOLD = 0.6
-    __JARO_WINKLER_THRESHOLD = 0.73
+    __JARO_WINKLER_THRESHOLD = 0.75
     __TOP_CHART_MATCHES = 3
 
     def match_charts(self, charts, src_paths):
@@ -83,9 +83,8 @@ class Dependencies:
                     distance = jellyfish.jaro_winkler(feature, keyword)
 
                     if distance > self.__JARO_WINKLER_THRESHOLD:
-                        # reward for name. hello renforcement learning and neural nets we like u
-                        if idx == 0 and distance == 1.0:
-                            distance = distance + 1.0
+                        if idx == 0 and distance > 0.8:
+                            distance = distance * 2
                         
                         total_score = total_score + distance
                         jaro_count = jaro_count + 1
