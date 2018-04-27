@@ -1,4 +1,4 @@
-FROM python:3.6.4-alpine
+FROM python:3.6.5-slim-stretch
 
 ARG CLI_VERSION
 ARG BUILD_DATE
@@ -14,25 +14,9 @@ LABEL maintainer="KreateIO" \
     org.label-schema.vcs-url="https://github.com/kreate-io/kreate.git" \
     org.label-schema.docker.cmd="docker run -v \${HOME}:/root/ -it kreateio/kreate:$CLI_VERSION"
 
-WORKDIR kreate-cli
-COPY . /kreate-cli
+WORKDIR kreate
+COPY . /kreate
 
-RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-RUN apk --update add --no-cache \ 
-    lapack-dev \ 
-    gcc \
-    freetype-dev
-
-# Install dependencies
-RUN apk add --no-cache --virtual .build-deps \
-    musl-dev \
-    g++
-RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
-
-RUN pip install .
-
-# removing dependencies
-RUN apk del .build-deps
-
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists
+RUN pip3 install . && rm -rf /kreate
 WORKDIR /
-CMD bash

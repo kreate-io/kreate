@@ -31,9 +31,9 @@ def test_dependency_to_keywords():
         ]
 
         expected_keywords = [
-                ['pg'],
-                ['mongoclient', 'mongodb'],
-                ['mysql'],
+                ['pg', 'pg'],
+                ['mongoclient', 'mongodb', 'mongoclient'],
+                ['mysql', 'mysql'],
                 ['mysql', 'data', 'mysqlclient'],
                 ['system', 'io']
         ]
@@ -41,6 +41,7 @@ def test_dependency_to_keywords():
         for i in range(0, len(dep_lines)):
                 keywords = dependencies.Dependencies().__dependency_to_keywords__(dep_lines[i])
                 assert set(keywords) == set(expected_keywords[i])
+
 
 def test_match_charts_per_keywords():
         helm_charts = helm.Helm(repo_name, repo_url, folders, logging.getLogger())
@@ -51,7 +52,7 @@ def test_match_charts_per_keywords():
                 ['mongoclient', 'mongodb'],
                 ['mysql'],
                 ['mysql', 'data', 'mysqlclient'],
-                # ['system', 'io'] failes for using System.IO
+                #['system', 'io'] 
         ]
 
         expected_charts = [
@@ -68,4 +69,5 @@ def test_match_charts_per_keywords():
                 
                 assert len(matched_charts) <= chart_count
                 assert matched_charts[0]['name'] == expected_charts[i]
+        
                  
