@@ -1,9 +1,10 @@
-import yaml
-import git
-import tempfile
-import shutil
 import os
+import shutil
 import subprocess
+import tempfile
+
+import git
+import yaml
 
 
 class Helm(object):
@@ -14,6 +15,12 @@ class Helm(object):
         self.repo_url = repo_url
         self.folders = folders
         self.logger = logger
+        self.yaml_files = []
+
+    @staticmethod
+    def __check_helm():
+
+        pass
 
     def __clone_charts_repo(self):
         self.logger.debug("Cloning charts repo...")
@@ -45,15 +52,18 @@ class Helm(object):
                 data = yaml.safe_load(chartfile)
                 yaml_objects.append(data)
                 for folder in self.folders:
-                    prefix = folder + "/" 
-                    if prefix in chart: # TODO: Change Can break
+                    prefix = folder + "/"
+                    if prefix in chart:  # TODO: Change Can break
                         data["fullname"] = prefix + data["name"]
                     self.logger.debug("Added " + data["name"])
                 chartfile.close()
         shutil.rmtree(self.charts_path)
         return yaml_objects
 
-    def install_helm_chart(self, name, chart_name, namespace="default"):
+    @staticmethod
+    def install_helm_chart(name, chart_name, namespace, dry_run):
         command = "helm upgrade " + name + \
             " --install --namespace " + namespace + " " + chart_name
-        subprocess.run(command, shell=True, check=True)
+        if dry_run:
+            command = command + " --dryrun"
+        output = subprocess.getoutput(command)

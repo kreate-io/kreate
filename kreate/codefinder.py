@@ -1,5 +1,5 @@
-import os
 import copy
+import os
 
 
 class CodeFinder(object):
@@ -64,7 +64,7 @@ class CodeFinder(object):
     # Traverses the folders under the given directory.
     def __get_files_with_extension_in_dir(self, path, file_extension):
 
-        if (file_extension.startswith(".") is False):
+        if file_extension.startswith(".") is False:
             file_extension = "." + file_extension
 
         list_of_files = []
