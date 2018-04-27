@@ -11,7 +11,6 @@ class Dependencies:
     __chart_model__ = chart_model.ChartModel()
     __SCORE_THRESHOLD = 0.6
     __JARO_WINKLER_THRESHOLD = 0.7
-    __STOP_THRESHOLD = 0.9
     __TOP_CHART_MATCHES = 3
 
     def match_charts(self, charts, src_paths):
@@ -84,10 +83,7 @@ class Dependencies:
                     'name': chart['name'],
                     'score': closest_distance
                 })
-
-            if closest_distance >= self.__STOP_THRESHOLD:
-                break 
-
+        
         if matches:
             matches.sort(key=lambda x: x['score'], reverse=True)
 

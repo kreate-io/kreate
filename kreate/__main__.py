@@ -41,7 +41,7 @@ def create_command_handler(path, namespace, repo_url, folders, repo_name, with_d
     matched_charts = commands_handler.match_source_to_charts(files, charts)
 
     for chart_group in matched_charts:
-        commands_handler.install_helm_chart(chart_group['name'], namespace)
+        commands_handler.install_helm_chart(chart_group[0]['name'], namespace)
             
     
 WELCOME_MESSAGE = r"""
