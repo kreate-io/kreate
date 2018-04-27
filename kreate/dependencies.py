@@ -79,6 +79,8 @@ class Dependencies:
             total_score = 0
             jaro_count = 0
 
+            features = set(features)
+
             for feature in features:
                 if feature in known_terms.keys():
                     feature = known_terms[feature]
@@ -88,37 +90,33 @@ class Dependencies:
 
                     if distance > self.__JARO_WINKLER_THRESHOLD:
                         if idx == 0:
-                            distance = distance * 2
+                            weight_factor = 0
+
+                            if distance == 1.0:
+                                weight_factor = 4
+                            else:
+                                weight_factor = 2
                         
+                            distance = distance * weight_factor
+
                         total_score = total_score + distance
                         jaro_count = jaro_count + 1
 
-            score = 0
-
-            if jaro_count > 0:
-                score = total_score / jaro_count
 
             matches.append({
                 'name': chart['name'],
                 'fullname': chart['fullname'],
-                'score': score
+                'score': total_score
             })
         
-        filtered = [x for x in matches if x['score'] >= self.__calculate_final_threshold(x['score'])]
+        filtered = [x for x in matches if x['score'] >= 0.85]
 
         if filtered:
             filtered.sort(key=lambda x: x['score'], reverse=True)
 
         return filtered[0:top_count]
 
-    def __calculate_final_threshold(self,score):
-        if score <= 1.0:
-            return self.__JARO_WINKLER_THRESHOLD
-        else:
-            return 1
 
-
-    
     def __f7(self, seq):
         seen = set()
         seen_add = seen.add
