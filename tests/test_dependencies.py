@@ -41,5 +41,3 @@ def test_dependency_to_keywords():
         for i in range(0, len(dep_lines)):
                 keywords = dependencies.Dependencies().__dependency_to_keywords__(dep_lines[i])
                 assert set(keywords) == set(expected_keywords[i])
-
-test_match_charts()
