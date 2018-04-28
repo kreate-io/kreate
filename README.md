@@ -1,6 +1,8 @@
 # Kreate: Fast deployment of code dependencies
 
 [![image](https://travis-ci.org/kreate-io/kreate.svg?branch=master)](https://travis-ci.org/kreate-io/kreate)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Django.svg)
+[![PyPI version](https://badge.fury.io/py/Kreate.svg)](https://badge.fury.io/py/Kreate)
 
 Kreate allows developers to focus on code and not ops by identifying and deploying third party dependencies such as Databases, Caches and other persistent stores into any Kubernetes cluster.
 
@@ -29,7 +31,7 @@ docker run -it -v ${HOME}:/root kreateio/kreate
 
 ### Windows, OSX and Linux
 
-1. Install [Python 3.6.5](https://www.python.org/downloads/release/python-365/)
+1. Install [Python 3](https://www.python.org/downloads/release/python-365/)
 2. ```pip install kreate```
 
 ## Usage
