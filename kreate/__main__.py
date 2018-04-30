@@ -31,15 +31,28 @@ helps['deploy'] = """
 def create_command_handler(path, namespace, repo_url, folders, repo_name, with_draft, dry_run):
 
     commands_handler = handler.Handler()
+    print("Downloading models")
     commands_handler.download_models()
+    print("Getting Helm charts")
     charts = commands_handler.get_helm_charts_details(
         repo_name, repo_url, folders)
     files = commands_handler.get_source_files(path)
+    print("Analyzing your code")
     matched_charts = commands_handler.match_source_to_charts(files, charts)
 
+    if not matched_charts:
+        print("No corresponding Helm Charts found")
+        sys.exit(0)
+
     for chart_group in matched_charts:
+        print("Discovered " + chart_group[0]['name'])
+
+    for chart_group in matched_charts:
+        print("Installing " + chart_group[0]['name'])
         commands_handler.install_helm_chart(
             chart_group[0]['fullname'], namespace, dry_run)
+
+    print("Done!")
 
 
 WELCOME_MESSAGE = r"""
